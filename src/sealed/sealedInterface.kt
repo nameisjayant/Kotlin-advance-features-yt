@@ -1,26 +1,22 @@
 package sealed
 
 sealed class CommonErrors : UserErrors,LoginErrors{
-    object UnAuthorised : CommonErrors()
+    object Authorised : CommonErrors()
     object ServerError : CommonErrors()
-    object BadRequest : CommonErrors()
 }
 
 sealed interface UserErrors {
-    data class UserAndEmailError(val data: String) : UserErrors
+    object EmailAndPasswordError : UserErrors
 }
 
-fun getUserErrors(userErrors: UserErrors) {
+fun getUserErrors(userErrors: UserErrors): Any {
     return when (userErrors) {
-        is UserErrors.UserAndEmailError -> {}
-        is CommonErrors.UnAuthorised->{}
-        is CommonErrors.BadRequest->{}
-        is CommonErrors.ServerError->{}
+        UserErrors.EmailAndPasswordError -> {}
+        CommonErrors.Authorised->{}
+        CommonErrors.ServerError->{}
     }
 }
 
 sealed interface LoginErrors {
     object LoginError : LoginErrors
-
 }
-
